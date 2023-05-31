@@ -1,7 +1,6 @@
 # gds-ace-swe-chapter
 # GDS ACE SWE Chapter
 
-This page serves as an overall noticeboard to document and 
 ## Chapter Leads and CoLeads
 - Calvin Cheng
 - Chua Jie Sheng
@@ -24,5 +23,7 @@ This page serves as an overall noticeboard to document and
 ## Chapter Activities 2023
 
 1. [Quarterly SWE Meetup](swe_meetup/meetup_2023_2.md)
+
+
 
 https://github.com/GovTechSG/lfg
