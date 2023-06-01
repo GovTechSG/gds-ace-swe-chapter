@@ -11,6 +11,10 @@ slack, telegram, calendar
 - Michael Cheng
 - Samantha Wong
 
+## Chapter Meetings
+
+1. [2023-06-01](meeting_20230601.md)
+
 ## Chapter Objectives 2023
 
 - Sharing
