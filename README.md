@@ -1,7 +1,10 @@
-# gds-ace-swe-chapter
 # GDS ACE SWE Chapter
 
-## Chapter Leads and CoLeads
+## Chapter Information
+
+slack, telegram, calendar
+
+### Leads and CoLeads
 - Calvin Cheng
 - Chua Jie Sheng
 - Janice Tan
