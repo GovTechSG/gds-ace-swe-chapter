@@ -13,7 +13,7 @@ slack, telegram, calendar
 
 ## Chapter Meetings
 
-1. [2023-06-01](meeting_20230601.md)
+1. [2023-06-01](meeting/meeting_20230601.md)
 
 ## Chapter Objectives 2023
 
@@ -23,9 +23,9 @@ slack, telegram, calendar
 
 ## Chapter Initiatives 2023
 
-1. [L3 SWE Competency Assessment](competency_assessment.md)
-2. [Standardisation of Interview Process](interview_standardisation.md)
-3. [Standardisation of Technical Stack](tech_stack_standardisation.md)
+1. [L3 SWE Competency Assessment](initiative/competency_assessment.md)
+2. [Standardisation of Interview Process](initiative/interview_standardisation.md)
+3. [Standardisation of Technical Stack](initiative/tech_stack_standardisation.md)
 
 ## Chapter Activities 2023
 
