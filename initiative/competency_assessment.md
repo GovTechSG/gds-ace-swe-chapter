@@ -3,6 +3,7 @@
 ## SWE Competencies
 
 | **Competency** | |
+| --- | --- |
 | Frontend Engineering | |
 | Backend Engineering | |
 | Cloud Application Engineering | |
@@ -17,6 +18,7 @@ Attach doc describing the commpetencies.
 ## Criteria and Mapping
 
 | **Assessment** | **Supporting Documents** | **Accessor** |
+| --- | --- | --- |
 | L1 to L2 | Employee and RO provide justification. | RO |
 | L3 | Employee and RO provide justification. | SWE Chapter |
 | L4 | Employee and RO provide justification. Employee provides portfolio. | Endorsed by SWE Chapter, but assessed by external assessor. |
@@ -25,6 +27,7 @@ Attach doc describing the commpetencies.
 ## Mapping to Grades
 
 | **Grade** | **Formula** |
+| --- | --- |
 | D, E, F | 1xL1 + 1xL2 |
 | G, H | 1xL1 + 2xL2 + 1xL3 |
 | I | 1xL2 + 3xL3 **or** 1xL1 + 2xL2 + 2xL3 |
