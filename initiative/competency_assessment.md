@@ -34,6 +34,8 @@ Add info on expected and sample support documentation.
 
 ### Mapping to Grades
 
+Need to revise for T-shaped development.
+
 | **Grade** | **Formula** |
 | --- | --- |
 | D, E, F | 1xL1 + 1xL2 |
@@ -49,7 +51,3 @@ Add info on expected and sample support documentation.
  1. Ensure RO and employee provide clear and complete supporting documentation.
  2. Optional: Interview either RO and/or employee for clarification.
 3. SWE Chatper co-leads then come together in a panel to review recommendation. We should be able to conclude by then, except in exceptional cases where further deliberation and interview maybe needed.
-
-
-
-
