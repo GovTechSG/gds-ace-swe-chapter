@@ -41,7 +41,7 @@ Need to revise for T-shaped development.
 | D, E, F | 1xL1 + 1xL2 |
 | G, H | 1xL1 + 2xL2 + 1xL3 |
 | I | 1xL2 + 3xL3<br/>1xL1 + 2xL2 + 2xL3 |
-| J | 1xL1 + 1xL2 + 2xL3 + 1xL4<br/>1xL1 + 2xL2 + 3xL3 |
+| J | 1xL1 + 1xL2 + 2xL3 + 1xL4<br/>2xL2 + 3xL3 |
 | K | 1xL1 + 2xL3 + 2xL4<br/>1xL1 + 2xL2 + 2xL3 + 1xL4 |
 | L | 1xL1 + 2xL3 + 2xL4 + 1xL5<br/>1xL1 + 1xL2 + 2xL3 + 2xL4 |
 
