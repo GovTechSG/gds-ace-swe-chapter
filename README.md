@@ -35,7 +35,7 @@ slack, telegram, calendar
 
 ### 2022
 
-#### Rationalisation of Frontend & Backend Engineering Competencies
+#### Rationalisation of Frontend & Backend Engineering Competencies with DSAI
 
 Context
 
