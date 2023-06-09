@@ -5,11 +5,17 @@
 slack, telegram, calendar
 
 ### Leads and CoLeads
-- Calvin Cheng
-- Chua Jie Sheng
-- Janice Tan
-- Michael Cheng
-- Samantha Wong
+
+| Clan / Tribe | Representatives            |
+|--------------|----------------------------|
+| ACE          | Calvin Cheng               |
+| NFT          | Justin Cheong              |
+| DnD          | Chew Choon Keat            |
+| Meteor       | Michael Cheng              |
+| Grants       | Calvin Cheng               |
+| G2B          | Samantha Wong              |
+| J&S          |                            |
+| CoLeads      | Janice Tan, Chua Jie Sheng |
 
 ## Chapter Meetings
 
