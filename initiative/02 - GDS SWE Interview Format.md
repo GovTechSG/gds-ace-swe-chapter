@@ -27,6 +27,7 @@ The goal is to have a general interview format that potential hires will all be 
             <ul>
                 <li>First cut could use a Mettl quiz</li>
                 <li>Possible to have automated test suites to validate that the tech challenge meets the requirements?</li>
+                <li>CRUD API is a backend-specific tech challenge. We will need something else for frontend-focused positions</li>
             </ul>
         </td>
     </tr>
@@ -50,6 +51,7 @@ The goal is to have a general interview format that potential hires will all be 
             <ul>
                 <li>Having 1 interviewer for 1 hour per stage for 2 stages vs 2 interviewers in a single 1 hour stage allows for independent assessments of the candidate and time to gather sufficient and accurate evidence for justifying hiring at a particular grade</li>
                 <li>What is the pair-programming model used by the various teams? Should that be standardised as well?</li>
+                <li>1 hour is very tight for building a new feature or thoroughly run through a system design, which might be too small to be meaningful. Suggestion to make it 1.5 hours per stage</li>
             </ul>
         </td>
     </tr>
@@ -131,4 +133,10 @@ Feel free to extend the application with salient features as long as it continue
 ### Example Assessment Rubrics
 
 (WIP)
+
+### Next Order Issues
+
+1. What questions to craft?
+2. How do we map to technical competencies?
+3. How do we map to the LCF?
 
