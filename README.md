@@ -29,9 +29,10 @@ slack, telegram, calendar
 
 ## Chapter Initiatives 2023
 
-1. [L3 SWE Competency Assessment](initiative/competency_assessment.md)
-2. [Standardisation of Interview Process](initiative/interview_standardisation.md)
-3. [Standardisation of Technical Stack](initiative/tech_stack_standardisation.md)
+1. [Competency Framework](https://github.com/orgs/GovTechSG/projects/11)
+2. [Q3 SWE Meetup](https://github.com/orgs/GovTechSG/projects/10)
+3. [Standardisation of Interview Process](initiative/interview_standardisation.md)
+4. [Standardisation of Technical Stack](initiative/tech_stack_standardisation.md)
 
 ## Chapter Activities 2023
 
