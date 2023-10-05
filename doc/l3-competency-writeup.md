@@ -67,7 +67,7 @@ Key Challenges - Highlight challenges, especially technical ones encountered to 
   - Much interdependency between the data - processing of one claim depends on history of all previous claims for the same patient.
   - Data schema has evolved over decades as original system went live in 1984. It is messy. We could tell that new tables and fields were added over the years to support new functionality.
 - Business logic was complex and not well understood by the team, including even our business users. Oftentimes, we had to analyse existing data to identify patterns.
-- Mapping of the data could not be done completely as we were both discovering the existing data, while also working with an evolving NPHC data model as NPHC was still being developed.
+- Mapping of the data could not be done completely as we were both discovering the existing data, while also working with an evolving NPHC data model as NPHC was still being developed. Furthermore, NPHC uses a clean room approach to claim processing and we cannot produce 1-1 mapping because of the significant processing differences.
 - Code was implemented in Kotlin using Spring Batch. We had parent jobs that created child jobs to be run by child workers in parallel.
 - We had to come up with deep optimisations in order to meet our tight timing requirements.
   - Created as many indexes as necessary to speed up queries, and also removing as many as possible to reduce update bottlenecks.
