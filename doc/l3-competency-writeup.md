@@ -70,16 +70,16 @@ Key Challenges - Highlight challenges, especially technical ones encountered to 
 - Mapping of the data could not be done completely as we were both discovering the existing data, while also working with an evolving NPHC data model as NPHC was still being developed. Furthermore, NPHC uses a clean room approach to claim processing and we cannot produce 1-1 mapping because of the significant processing differences.
 - Code was implemented in Kotlin using Spring Batch. We had parent jobs that created child jobs to be run by child workers in parallel.
 - We had to come up with deep optimisations in order to meet our tight timing requirements.
-  - Created as many indexes as necessary to speed up queries, and also removing as many as possible to reduce update bottlenecks.
-  - Created materialised views and temporary tables to prepare the data as early as possible, as well as to leverage the more optimised database engine over our own code implementation.
+  - Created as many indexes as necessary to speed up queries, and also removed as many as possible to reduce update bottlenecks.
+  - Created materialised views and temporary tables for us to prepare the data as early as possible, as well as to leverage the more optimised database engine over our own code implementation.
   - Used Redis to cache runtime working data.
-  - Re-organised the processing to be based on each patient's claim history because of the need to have all of the patient's claims available in order to process each one of them.
-  - Used bulk insert and also sequence generation as much as possible.
-  - Used SpringBatch multithreading mode to have more parallelism within a single worker.
+  - Re-organised the processing to be based on each patient's claim history because of the need to have all of the patient's claims when loading each claim.
+  - Used bulk insert and sequence generation.
+  - Used SpringBatch multithreading step processor to have more parallelism within a single worker.
 - We worked with various monitoring tools to monitor performance and resource consumption.
   - Grafana for JVM CPU and memory usage.
   - AWS RDS Performance Insights to understand DB workloads, SQL optimisation and performance.
 - We also overcome some of these problems.
-  - We decided to simplify and not have autoscaling as our setup caused Kubernetes to shutdown workers.
-  - We encountered JVM out of heap space issues so we had to ensure we had enough heap space allocated.
+  - We decided to simplify and not have autoscaling as our setup because Kubernetes would shutdown pods without realising that each pod is working on multi-hour requests. We should have designed for shorter-lived jobs but that only became apparent in hindsight.
+  - We encountered JVM out of heap space issues so we had to ensure we had enough heap space allocated, and also watch out for memory leaks.
 - Our first run of our script would have taken 3 months to migrate the data. Through extensive optimisation, we reduced it to 10 hours for 15M records 2-week delta update after pre-loading 50M for entire claim history.
