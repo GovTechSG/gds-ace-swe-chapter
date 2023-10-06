@@ -1,8 +1,21 @@
-# Sample Write Ups for SWE L3 Competency Assessment
+# Sample Writeups for SWE L3 Competency Assessment
 
-The write up is meant for evaluating technical competency and not for review. While we want to understand the scope and complexity done, we only need enough to assess competency, and not to recognise work accomplishments.
+The sample writeups here provide examples. Pay attention to the following.
+- Clear and sufficiently limited scope to establish what you are basing the assessment on. Picking specific projects or tasks with concrete deliverables would be ideal, and these maybe reusable for performance appraisal purposes.
+  - Implementation and performance testing of MediSave Balance Enquiry (MBE) API - specific API
+  - Design of NPHC's claim processing DLQ (Deadletter Queue) - specific functionality of an application
+  - Design and implementation of data mapping logic to facilitate data loading into NPHC from existing system
+  - Performance tuning of NPHC data loader to achieve NPHC go live cutover timing requirements
+- Although one writeup is needed for each competency, you can arguably reuse the same writeup as long as you can clearly separate your assessment by competency. We advise that you use a common background to describe the problem statement/project, but use specific descriptions for each competency's writeup submission.
+- Pay close attention to how it helps you answer the multiple choice questions in the form as listed below.
 
-We have it in monospace text format to match what you need to type in the form.
+| Question | Description |
+| :- | :- |
+| Scope | Level of effort for the project/tasks described in the writeup. |
+| Role | Role of assessee in the described project/tasks. |
+| Problem Solving | Assessee's ability in addressing technical and other challenges encountered. |
+| Execution and Delivery | Assessee's ability to deliver quality output in a timely fashion. |
+| Engineering Craftsmanship | Assessee's ability to promote engineering quality and standards, not just as an individual, but also at team and higher level. |
 
 ## Backend Engineering
 
