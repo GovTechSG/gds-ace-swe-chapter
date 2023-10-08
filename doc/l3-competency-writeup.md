@@ -17,6 +17,7 @@ The sample writeups here provide examples. Pay attention to the following.
 | Execution and Delivery | Assessee's ability to deliver quality output in a timely fashion. |
 | Engineering Craftsmanship | Assessee's ability to promote engineering quality and standards, not just as an individual, but also at team and higher level. |
 
+
 ## Backend Engineering
 
 Background - Simple bullet points to help us understand the subject used for assessment
@@ -62,26 +63,52 @@ Key Challenges - Highlight challenges, especially technical ones encountered to 
 
 ## Data Architecture
 
+### Design and Implement NPHC Data Migration Data Mapping
+
 Background - Simple bullet points to help us understand the subject used for assessment
 - Design and implementation of NPHC (National Platform for Healthcare Claims)'s Data Migration Tool
 - Comprises set of ETL tools that loads existing Mediclaim data comprising 50 million claim records into NPHC before we go live.
 
 Role and Achievement - Briefly describe assessee's role and the concrete deliverables so we can establish scope
 - The software was developed by 4 SWEs and tested by 3 SWEs.
-- I was the SWE lead. I was focused on ensuring proper mapping of the data by working closely with our business stakeholders, while also working closely with other team members to design the right algorithms used to improve performance.
-- I worked closely with QEs for all of us to better understand the data mapping and to develop sufficient testing for the migration.
-- We were able to deliver a reliable migration tool that we are able to use to take NPHC live.
-
+- Code was implemented in Kotlin using Spring Batch. We had parent jobs that created child jobs to be run by child workers in parallel.
+- I was the SWE lead. I focused on discussing with stakeholders (our PO, BA, CPF and Mediclaim partners) to learn, understand the existing data model.
+- I worked with our QE lead to develop the test plan. Both of us became subject matter expertson on our data model.
+- I worked with members of the team to design and develop the algorithms to implement the loading in a performant way.
+- I coordinated with our DevOps and NPHC platform team on the shared resources needed to carry out activities between the teams.
+- We were able to complete our mapping to be ready for the initialial Milestone 3 launch of NPHC.
+ 
 Key Challenges - Highlight challenges, especially technical ones encountered to give us a sensing of the level of technical difficulty. Good to throw in technical buzzwords
 - Great complexity in the data:
   - Data comes from two datasources - Mediclaim database on Microsoft SQL Server, and CPF claim processing data on IBM mainframe DB2. There is overlap but they are not always in sync.
+  - Compared to the Mediclaim's relational database, and CPF's hierarchical database, NPHC uses Postgres but as object database.
   - A claim includes up to hundreds of data fields, requiring deep knowledge on how the data is generated and what it should be.
   - In addition to claim data, other information - patient data, payer data, utilisation data (by patient and period, and not by claim), and many more. Even the patient or payer's IDs (usually NRIC) can change over the years and we need to be able to align them back to the same person despite ID changes.
   - Much interdependency between the data - processing of one claim depends on history of all previous claims for the same patient.
   - Data schema has evolved over decades as original system went live in 1984. It is messy. We could tell that new tables and fields were added over the years to support new functionality.
-- Business logic was complex and not well understood by the team, including even our business users. Oftentimes, we had to analyse existing data to identify patterns.
-- Mapping of the data could not be done completely as we were both discovering the existing data, while also working with an evolving NPHC data model. Furthermore, NPHC uses a cleanroom approach to claim processing. As a result, we cannot produce 1-1 mapping because of the significant differences, necessitating discussions with stakehholders on compromises.
+  - Business logic was complex and not well understood by the team, including even our business users. Oftentimes, we had to analyse existing data to identify patterns. 
+  - Last but not least, in addition to standard claim processing, we also had to support additional workflows - reimbursement, claims that were pending manual verification, appeals, blacklists, special processing schemes. Bulk of the difficult comes from understanding the operational details so that we can start discussing how to map them to NPHC operations.
+- We had to iteratively try our assumptions of the data and working collaboratively with our business users to examine the output and progressively refine our mapping model.
+- Mapping of the data could not be done completely as we were both discovering the existing data, while also working with an evolving NPHC data model. Furthermore, NPHC uses a cleanroom approach to claim processing. As a result, we also had to spend considerable effort and time with our PO and soluion architects who have built our rule model to harmonise our mapping.
+
+### Improve NPHC Data Migration Loading Performance to Meet Requirements
+
+Background - Simple bullet points to help us understand the subject used for assessment
+- Design and implementation of NPHC (National Platform for Healthcare Claims)'s Data Migration Tool
+- Comprises set of ETL tools that loads existing Mediclaim data comprising 50 million claim records into NPHC before we go live.
+
+Role and Achievement - Briefly describe assessee's role and the concrete deliverables so we can establish scope
+- The software was developed by 4 SWEs and tested by 3 SWEs.
+- I was the senior SWE of the team. I was focused on developing the Spring Batch foundation of the data migration tool and ensuring it runs in a performant manner.
+- I proposed the use of Spring Batch to the team. I designed the initial Spring Batch structure including our parallel loading mechanism and the designt the metadata for us to track migration jobs.
+- I worked with members of the team to design and develop the algorithms to implement the loading in a performant way.
+- I coordinated with our DevOps and NPHC platform team on the shared resources needed to carry out activities between the teams.
+- I used performance tools such as AWS Performance Insights, Grafana to monitor performance (query performance, JVM usage etc) and identify bottlenecks.
+- I developed and optimised our query scripts to improve performance, and advised the rest of the team on that as I am very proficient on SQL.
 - Code was implemented in Kotlin using Spring Batch. We had parent jobs that created child jobs to be run by child workers in parallel.
+- We were able to complete our mapping to be ready for the initialial Milestone 3 launch of NPHC.
+
+Key Challenges - Highlight challenges, especially technical ones encountered to give us a sensing of the level of technical difficulty. Good to throw in technical buzzwords
 - We had to come up with deep optimisations in order to meet our tight timing requirements.
   - Created as many indexes as necessary to speed up queries, and also removed as many as possible to reduce update bottlenecks.
   - Created materialised views and temporary tables for us to prepare the data as early as possible, as well as to leverage the more optimised database engine over our own code implementation.
@@ -89,9 +116,6 @@ Key Challenges - Highlight challenges, especially technical ones encountered to 
   - Re-organised the processing to be based on each patient's claim history because of the need to have all of the patient's claims when loading each claim.
   - Used bulk insert and sequence generation.
   - Used SpringBatch multithreading step processor to have more parallelism within a single worker.
-- We worked with various monitoring tools to monitor performance and resource consumption.
-  - Grafana for JVM CPU and memory usage.
-  - AWS RDS Performance Insights to understand DB workloads, SQL optimisation and performance.
 - We also overcome some of these problems.
   - We decided to simplify and not have autoscaling as our setup because Kubernetes would shutdown pods without realising that each pod is working on multi-hour requests. We should have designed for shorter-lived jobs but that only became apparent in hindsight.
   - We encountered JVM out of heap space issues so we had to ensure we had enough heap space allocated, and also watch out for memory leaks.
