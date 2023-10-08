@@ -54,12 +54,42 @@ Key Contributions - Highlight key challenges solved, especially technical ones e
 
 ## Software Architecture
 
-Background - Simple bullet points to help us understand the subject used for assessment
-- Design and implementation of NPHC (National Platform for Healthcare Claims) DLQ (Dead Letter Queue).
+### Design and implementation of NPHC (National Platform for Healthcare Claims) DLQ (Dead Letter Queue)
 
-Role and Achievement - Briefly describe assessee's role and the concrete deliverables so we can establish scope
+Background - Simple bullet points to help us understand the subject used for assessment
+- Event-driven claims processing flow.
+- Read XML files from SFTP.
+- Utilize Camel to manage the claims process and transmit claim data to multiple processes through SQS.
+- Make REST calls through APEX to CPF to initiate payments.
+- Forward the platform exceptions to the Dead Letter Queue (DLQ) for subsequent reprocessing once the error has been rectified.
+
+Role and Achievement - Briefly describe assessee's role and the concrete deliverables so we can establish scope.
+- Design and implementation of NPHC DLQ.
+- The Platform was developed by 11 SWEs and 11 QE.
+- I was the SWE lead, collaborated with MOH, IFC and the External team (CPFB, APEX, MSB, MMAE).
+- My main objective was to provide architectural solutions for the platform, and I presented the proposed solution to the Solution Architect (SA).
+- I designed the DLQ to manage system exceptions, enabling the system to reprocess data once the error is resolved. This enhances system stability.
+- I broke down microservices based on business logic, leading to enhanced platform performance and simplified process complexity.
 
 Key Challenges - Highlight challenges, especially technical ones encountered to give us a sensing of the level of technical difficulty. Good to throw in technical buzzwords
+
+- Complex Claims Process:
+  - The complexity of the claims process requires system design to consider performance, stability and scalability.
+  - The original system dates back to 1984 and its documentation is outdated, making it challenging for PO and BA to grasp the specific business logic. The system design must be flexible to facilitate swift adaptations for document changes.
+  - SWE and QE invest significant time in understanding the complex business logic, necessitating a system design that can seamlessly adapt to changing business needs.
+- Performance Optimization:
+  - Meeting peak demands requires the claims process to handle up to 6,000 claims per hour. Through microservices decomposition and thoughtful business process planning, processing performance has been significantly boosted from 3,000 claims per hour to an impressive 10,000 claims per hour.
+
+  - Alleviating congestion in the SQS and enhancing information transmission efficiency is crucial. This is being achieved by disassembling SQS and integrating API calls.
+- Complex Data Structure:
+  - Claims data is structured within a single, sizeable JSON dataset, averaging around 100KB. Managing storage and retrieval for such data poses substantial performance challenges. Performance gains are sought by employing partition tables to expedite data processing efficiency.
+  - External interfaces must efficiently access this data. Implementing multiple read-only databases has enhanced data retrieval efficiency while isolating its impact on the claims process.
+- VPC Peering Milestone:
+  - A significant achievement within NPHC is the pioneering use of VPC peering to establish communication with an MSB situated in the central IT services subnet. Collaboration with other teams is critical for troubleshooting APIs, especially when the gateway connectivity documentation lacks clarity.
+- DLQ Design Challenges:
+  - The absence of specific business requirements and application scenarios complicates DLQ design. Setting system exception capture and retry requirements relies heavily on experience.
+  - Managing retries presents challenges related to data consistency. A strategy involving multiple retry nodes has been devised to prevent redundant data consumption.
+  - Since the design requirements of the retry API are unclear, flexible APIs must be developed to meet different application scenarios.
 
 ## Data Architecture
 
