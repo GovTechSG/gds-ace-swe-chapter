@@ -1,13 +1,13 @@
 # Sample Writeups for SWE L3 Competency Assessment
 
 Here are a few writeups to provide examples for the "Basis of Assessment" field in the form.
-1. Implementation and performance testing of MediSave Balance Enquiry (MBE) API - specific API
-2. Design of NPHC's claim processing DLQ (Deadletter Queue) - specific functionality of an application
-3. Design and implementation of data mapping logic to facilitate data loading into NPHC from existing system
-4. Performance tuning of NPHC data loader to achieve NPHC go live cutover timing requirements
+1. Backend Engineering - Implementation and performance testing of MediSave Balance Enquiry (MBE) API - specific API
+2. Software Architecture - Design of NPHC's claim processing DLQ (Deadletter Queue) - specific functionality of an application
+3. Data Architecture - Design and implementation of data mapping logic to facilitate data loading into NPHC from existing system
+4. Data Architecture - Performance tuning of NPHC data loader to achieve NPHC go live cutover timing requirements
 
 Tips
-- Our goal is to have a clear picture of the scope and complexity. This is best helped by limited scope and well-defined delivereables that were met. Pick specific deliverables rather than overall project or product requirements.
+- Pick specific deliverables rather than overall project or product work. We are best served by limited scope and well-defined deliverables for which we can easily assess complexity. A broad writeup of assessee's overall work accomplishments is to broad and vague.
 - Feel free to throw in technical terms as long as those are actually used in the delivereables.
 - Although one writeup is needed for each competency, you can arguably reuse the same writeup as long as you can clearly separate your assessment by competency. We advise that you use a common background to describe the problem statement/project, but use specific descriptions for each competency's writeup submission.
 - Pay close attention to how it helps you answer the multiple choice questions in the form as listed below.
