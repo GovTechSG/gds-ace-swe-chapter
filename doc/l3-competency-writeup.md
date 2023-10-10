@@ -82,19 +82,19 @@ Key Challenges - Highlight challenges, especially technical ones encountered to 
   - Managing retries presents challenges related to data consistency. A strategy involving multiple retry nodes has been devised to prevent redundant data consumption.
   - Since the design requirements of the retry API are unclear, flexible APIs must be developed to meet different application scenarios.
 
-#### Not DLQ
-
-##### Performance Optimization
+#### Performance Optimization
 - Complex Data Structure:
   - External interfaces must efficiently access this data. Implementing multiple read-only databases has enhanced data retrieval efficiency while isolating its impact on the claims process.
   - Claims data is structured within a single, sizeable JSON dataset, averaging around 100KB. Managing storage and retrieval for such data poses substantial performance challenges. Performance gains are sought by employing partition tables to expedite data processing efficiency.
   - Meeting peak demands requires the claims process to handle up to 6,000 claims per hour. Through microservices decomposition and thoughtful business process planning, processing performance has been significantly boosted from 3,000 claims per hour to an impressive 10,000 claims per hour.
   - Alleviating congestion in the SQS and enhancing information transmission efficiency is crucial. This is being achieved by disassembling SQS and integrating API calls.
+- The current claims process is inefficient and requires a redesign of the microservices architecture. In particular, resource-intensive microservices should be partitioned to improve performance, while microservices with lower resource consumption should be consolidated.
+- Excessive audit logs pose challenges to writing efficiency. To solve this problem, we implemented AWS's Kinesis service for asynchronous submission of audit logs as well as S3 backups.
 
-##### Integration/Overall
+#### Integration/Overall
 - VPC Peering Milestone:
   - A significant achievement within NPHC is the pioneering use of VPC peering to establish communication with an MSB situated in the central IT services subnet. Collaboration with other teams is critical for troubleshooting APIs, especially when the gateway connectivity documentation lacks clarity.
-
+  
 ## Data Architecture
 
 ### Design and Implement NPHC Data Migration Data Mapping
