@@ -55,46 +55,41 @@ Key Contributions - Highlight key challenges solved, especially technical ones e
 
 ## Software Architecture
 
-### Design and implementation of NPHC (National Platform for Healthcare Claims) DLQ (Dead Letter Queue)
+### Update Design and Optimise NPHC (National Platform for Healthcare Claims) Design for Performance
 
 Background - Simple bullet points to help us understand the subject used for assessment
 - NPHC implements all MediSave and MediShield Life claims processing.
 - NPHC's claim processing implements event-driven workflow, where we receive and deliver XML files from/to Medical Institutions (MI) and Insurers indirectly via Mediclaim over SFTP.
-- We utilize Apache Camel workflow and integration framework to implenment multiple microservices to manage the claims process and transmit claim data to multiple processes, integrated using Apaceh SQS. 
+- We utilize Apache Camel workflow and integration framework to implenment multiple microservices to manage the claims process and transmit claim data to multiple processes, integrated using Apaceh SQS.
 - We use REST API to call IBM ODM (Operational Decision Manager) as a rule engine to implement claim processing rules.
 - We also make REST calls through APEX to CPF to initiate payments, as well as other external calls to validate MI and patient info (such as date of birth, gender etc).
 - Claim processing logic is complex due to multiple steps. If Medishield Life is involved, claims also need to be routed to external insurers for additional processing.
-- We implement a DLQ (Dead Letter Queue) to support exceptions handling which maybe due to bad input data, or systems issues.
-
+- By improving the initial design of the microservices, we significantly improved the performance of the platform in processing claims.
 Role and Achievement - Briefly describe assessee's role and the concrete deliverables so we can establish scope.
 - The entire NPHC Claim Processing Platform was developed by 11 SWEs and 11 QE.
 - I was the SWE lead, collaborated with MOH, IFC and the External team (CPFB, APEX, MSB, MMAE).
 - My main objective was to provide architectural solutions for the platform, and I presented the proposed solution to the Solution Architect (SA).
-- I designed the DLQ to manage system exceptions, enabling the system to reprocess data once the error is resolved. This enhances system stability.
+- I redesigned the microservices to improve the performance of the platform in processing claims.
 - I broke down microservices based on business logic, leading to enhanced platform performance and simplified process complexity.
-
 Key Challenges - Highlight challenges, especially technical ones encountered to give us a sensing of the level of technical difficulty. Good to throw in technical buzzwords
 - Complex Claims Process:
-  - The original system dates back to 1984 and its documentation is outdated, making it challenging for PO and BA to grasp the specific business logic. The system design must be flexible to facilitate swift adaptations for document changes.
-  - SWE and QE invest significant time in understanding the complex business logic, necessitating a system design that can seamlessly adapt to changing business needs.
-- DLQ Design Challenges:
-  - The absence of specific business requirements and application scenarios complicates DLQ design. Setting system exception capture and retry requirements relies heavily on experience.
-  - Managing retries presents challenges related to data consistency. A strategy involving multiple retry nodes has been devised to prevent redundant data consumption.
-  - Since the design requirements of the retry API are unclear, flexible APIs must be developed to meet different application scenarios.
+  - The original platform dates back to 1984 and its documentation is outdated, making it challenging for PO and BA to grasp the specific business logic. The platform design must be flexible to facilitate swift adaptations for document changes.
+  - SWE and QE invest significant time in understanding the complex business logic, necessitating a platform design that can seamlessly adapt to changing business needs.
+- Performance improvement Challenges:
+  - The initial platform design mainly focused on functional implementation and lacked stress testing.
+  - Given the complexity of platform functionality, comprehensive integration testing is required to identify performance bottlenecks.
+  - Improving platform performance requires a comprehensive transformation of the entire platform architecture, and ensuring platform stability is the top priority.
 
-#### Not DLQ
-
-##### Performance Optimization
+#### Performance Optimization
 - Complex Data Structure:
-  - External interfaces must efficiently access this data. Implementing multiple read-only databases has enhanced data retrieval efficiency while isolating its impact on the claims process.
-  - Claims data is structured within a single, sizeable JSON dataset, averaging around 100KB. Managing storage and retrieval for such data poses substantial performance challenges. Performance gains are sought by employing partition tables to expedite data processing efficiency.
-  - Meeting peak demands requires the claims process to handle up to 6,000 claims per hour. Through microservices decomposition and thoughtful business process planning, processing performance has been significantly boosted from 3,000 claims per hour to an impressive 10,000 claims per hour.
-  - Alleviating congestion in the SQS and enhancing information transmission efficiency is crucial. This is being achieved by disassembling SQS and integrating API calls.
-
-##### Integration/Overall
-- VPC Peering Milestone:
-  - A significant achievement within NPHC is the pioneering use of VPC peering to establish communication with an MSB situated in the central IT services subnet. Collaboration with other teams is critical for troubleshooting APIs, especially when the gateway connectivity documentation lacks clarity.
-
+  - Ensuring valid external interfaces to access this data is critical. The introduction of multiple read-only databases not only improves data retrieval efficiency, but also effectively reduces its impact on the claims process.
+  - The claims data resides in a fairly large JSON dataset, averaging around 100KB. Managing the storage and retrieval of such data presents significant performance challenges. To achieve significant performance improvements, we use partitioned tables to simplify data processing. This optimization resulted in a significant reduction in search time, from 6 seconds to just 2 seconds.
+- Complex Microservice Process:
+  - Meeting peak demand requires the claims process to process up to 6,000 claims per hour. Recognizing the inefficiencies in the current claims process, we began making changes to the microservices design. Specifically, we partition resource-intensive microservices to improve performance and consolidate microservices with lower resource requirements. Through this microservices re-engineering initiative, combined with careful business process planning, we achieved significant improvements in performance, increasing processing capacity from 3,000 claims per hour to an impressive 10,000 claims per hour.
+  - Some microservices experience heavy information processing, causing SQS congestion. It is crucial to alleviate this congestion and improve the efficiency of information transmission. We solved this problem by converting from SQS to API calls for data transfer. This shift significantly improved data transfer efficiency without affecting data reliability, ultimately reducing the number of microservice Pods from the original 12 to 6 while maintaining performance standards.
+- Audit Log Writing Efficiency
+  - Large amounts of audit logs pose challenges for efficient writing. Although transferring logs through SQS can speed up log writing efficiency, it also brings cost considerations. To this end, we implemented AWS's Kinesis service for asynchronous audit log submission and secure backup in S3, ensuring efficient operations and cost management.
+ 
 ## Data Architecture
 
 ### Design and Implement NPHC Data Migration Data Mapping
