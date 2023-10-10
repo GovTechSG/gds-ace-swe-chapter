@@ -130,7 +130,7 @@ Role and Achievement - Briefly describe assessee's role and the concrete deliver
 - The software was developed by 4 SWEs and tested by 3 SWEs.
 - I was the senior SWE of the team. I was focused on developing the Spring Batch foundation of the data migration tool and ensuring it runs in a performant manner.
 - I proposed the use of Spring Batch to the team. I designed the initial Spring Batch structure including our parallel loading mechanism and the designt the metadata for us to track migration jobs.
-- I worked with members of the team to design and develop the algorithms to implement the loading in a performant way.
+- I worked with members of the team to design and develop the algorithms to implement the data loading pipeline in a performant way.
 - I coordinated with our DevOps and NPHC platform team on the shared resources needed to carry out activities between the teams.
 - I used performance tools such as AWS Performance Insights, Grafana to monitor performance (query performance, JVM usage etc) and identify bottlenecks.
 - I developed and optimised our query scripts to improve performance, and advised the rest of the team on that as I am very proficient on SQL.
@@ -148,4 +148,4 @@ Key Challenges - Highlight challenges, especially technical ones encountered to 
 - We also overcome some of these problems.
   - We decided to simplify and not have autoscaling as our setup because Kubernetes would shutdown pods without realising that each pod is working on multi-hour requests. We should have designed for shorter-lived jobs but that only became apparent in hindsight.
   - We encountered JVM out of heap space issues so we had to ensure we had enough heap space allocated, and also watch out for memory leaks.
-- Our first run of our script would have taken 3 months to migrate the data. Through extensive optimisation, we reduced it to 10 hours for 15M records 2-week delta update after pre-loading 50M for entire claim history.
+- Our first run of our script would have taken 3 months to migrate the data. Through extensive optimisation, we were able to reduce it to 10 hours for 15M records 2-week delta update after pre-loading 50M for entire claim history.
