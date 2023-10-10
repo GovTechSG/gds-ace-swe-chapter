@@ -23,7 +23,6 @@ The sample writeups here provide examples. Pay attention to the following.
 ## Implementation and performance testing of MediSave Balance Enquiry (MBE) API
 
 Background - Simple bullet points to help us understand the subject used for assessment
-
 - MBE API is an external API exposed by NPHC (National Platform for Healthcare Claims) via APEX.
 - This API replaces an existing API to query the current system running on a mainframe.
 - This is consumed by MIs (Medical Institutions) and Partner C.
@@ -33,7 +32,6 @@ Background - Simple bullet points to help us understand the subject used for ass
     - Codes and appeal information from Partner A
 
 Scope and Deliverables - Briefly describe your role and concrete deliverables, so we can establish scope
-
 - My role was as the SWE tech lead.
 - I led a team of 5 SWEs and 5 QEs (3 for testing and 2 for performance testing). As well as work with POs from MOH, BA from MOH IFC (GovTech Services), and 2 solution architects from GovTech SAO.
 - I worked with our stakeholders to fully define and freeze the requirements, and also our QEs and DevOps to define the testing methodology for both the requirements and performance testing.
@@ -42,7 +40,6 @@ Scope and Deliverables - Briefly describe your role and concrete deliverables, s
     - Exit Criteria: < 2% failure rate, < 80% CPU and memory utilisation
 
 Key Contributions - Highlight key challenges solved, especially technical ones encountered to give us a sensing of the level of technical difficulty
-
 1. Requirements, particularly on performance were unclear at the beginning.
 2. Difficult to coordinate with external parties (Partner A, Partner B, Partner C) given they have separate development timelines.
 3. Worked with team to refactor our microservice logic to be more performant - by using async processing and bulk queries. Because of this, we had to restructure the way the code prepares and calls the external APIs.
@@ -58,39 +55,42 @@ Key Contributions - Highlight key challenges solved, especially technical ones e
 ### Design and implementation of NPHC (National Platform for Healthcare Claims) DLQ (Dead Letter Queue)
 
 Background - Simple bullet points to help us understand the subject used for assessment
-- Event-driven claims processing flow.
-- Read XML files from SFTP.
-- Utilize Camel to manage the claims process and transmit claim data to multiple processes through SQS.
-- Make REST calls through APEX to CPF to initiate payments.
-- Forward the platform exceptions to the Dead Letter Queue (DLQ) for subsequent reprocessing once the error has been rectified.
+- NPHC implements all MediSave and MediShield Life claims processing.
+- NPHC's claim processing implements event-driven workflow, where we receive and deliver XML files from/to Medical Institutions (MI) and Insurers indirectly via Mediclaim over SFTP.
+- We utilize Apache Camel workflow and integration framework to implenment multiple microservices to manage the claims process and transmit claim data to multiple processes, integrated using Apaceh SQS. 
+- We use REST API to call IBM ODM (Operational Decision Manager) as a rule engine to implement claim processing rules.
+- We also make REST calls through APEX to CPF to initiate payments, as well as other external calls to validate MI and patient info (such as date of birth, gender etc).
+- Claim processing logic is complex due to multiple steps. If Medishield Life is involved, claims also need to be routed to external insurers for additional processing.
+- We implement a DLQ (Dead Letter Queue) to support exceptions handling which maybe due to bad input data, or systems issues.
 
 Role and Achievement - Briefly describe assessee's role and the concrete deliverables so we can establish scope.
-- Design and implementation of NPHC DLQ.
-- The Platform was developed by 11 SWEs and 11 QE.
+- The entire NPHC Claim Processing Platform was developed by 11 SWEs and 11 QE.
 - I was the SWE lead, collaborated with MOH, IFC and the External team (CPFB, APEX, MSB, MMAE).
 - My main objective was to provide architectural solutions for the platform, and I presented the proposed solution to the Solution Architect (SA).
 - I designed the DLQ to manage system exceptions, enabling the system to reprocess data once the error is resolved. This enhances system stability.
 - I broke down microservices based on business logic, leading to enhanced platform performance and simplified process complexity.
 
 Key Challenges - Highlight challenges, especially technical ones encountered to give us a sensing of the level of technical difficulty. Good to throw in technical buzzwords
-
 - Complex Claims Process:
-  - The complexity of the claims process requires system design to consider performance, stability and scalability.
   - The original system dates back to 1984 and its documentation is outdated, making it challenging for PO and BA to grasp the specific business logic. The system design must be flexible to facilitate swift adaptations for document changes.
   - SWE and QE invest significant time in understanding the complex business logic, necessitating a system design that can seamlessly adapt to changing business needs.
-- Performance Optimization:
-  - Meeting peak demands requires the claims process to handle up to 6,000 claims per hour. Through microservices decomposition and thoughtful business process planning, processing performance has been significantly boosted from 3,000 claims per hour to an impressive 10,000 claims per hour.
-
-  - Alleviating congestion in the SQS and enhancing information transmission efficiency is crucial. This is being achieved by disassembling SQS and integrating API calls.
-- Complex Data Structure:
-  - Claims data is structured within a single, sizeable JSON dataset, averaging around 100KB. Managing storage and retrieval for such data poses substantial performance challenges. Performance gains are sought by employing partition tables to expedite data processing efficiency.
-  - External interfaces must efficiently access this data. Implementing multiple read-only databases has enhanced data retrieval efficiency while isolating its impact on the claims process.
-- VPC Peering Milestone:
-  - A significant achievement within NPHC is the pioneering use of VPC peering to establish communication with an MSB situated in the central IT services subnet. Collaboration with other teams is critical for troubleshooting APIs, especially when the gateway connectivity documentation lacks clarity.
 - DLQ Design Challenges:
   - The absence of specific business requirements and application scenarios complicates DLQ design. Setting system exception capture and retry requirements relies heavily on experience.
   - Managing retries presents challenges related to data consistency. A strategy involving multiple retry nodes has been devised to prevent redundant data consumption.
   - Since the design requirements of the retry API are unclear, flexible APIs must be developed to meet different application scenarios.
+
+#### Not DLQ
+
+##### Performance Optimization
+- Complex Data Structure:
+  - External interfaces must efficiently access this data. Implementing multiple read-only databases has enhanced data retrieval efficiency while isolating its impact on the claims process.
+  - Claims data is structured within a single, sizeable JSON dataset, averaging around 100KB. Managing storage and retrieval for such data poses substantial performance challenges. Performance gains are sought by employing partition tables to expedite data processing efficiency.
+  - Meeting peak demands requires the claims process to handle up to 6,000 claims per hour. Through microservices decomposition and thoughtful business process planning, processing performance has been significantly boosted from 3,000 claims per hour to an impressive 10,000 claims per hour.
+  - Alleviating congestion in the SQS and enhancing information transmission efficiency is crucial. This is being achieved by disassembling SQS and integrating API calls.
+
+##### Integration/Overall
+- VPC Peering Milestone:
+  - A significant achievement within NPHC is the pioneering use of VPC peering to establish communication with an MSB situated in the central IT services subnet. Collaboration with other teams is critical for troubleshooting APIs, especially when the gateway connectivity documentation lacks clarity.
 
 ## Data Architecture
 
@@ -105,22 +105,20 @@ Role and Achievement - Briefly describe assessee's role and the concrete deliver
 - Code was implemented in Kotlin using Spring Batch. We had parent jobs that created child jobs to be run by child workers in parallel.
 - I was the SWE lead. I focused on discussing with stakeholders (our PO, BA, CPF and Mediclaim partners) to learn, understand the existing data model.
 - I worked with our QE lead to develop the test plan. Both of us became subject matter expertson on our data model.
-- I worked with members of the team to design and develop the algorithms to implement the loading in a performant way.
-- I coordinated with our DevOps and NPHC platform team on the shared resources needed to carry out activities between the teams.
-- We were able to complete our mapping to be ready for the initialial Milestone 3 launch of NPHC.
+- We were able to complete our mapping and implement the migration tool to be ready for the initialial Milestone 3 launch of NPHC.
  
 Key Challenges - Highlight challenges, especially technical ones encountered to give us a sensing of the level of technical difficulty. Good to throw in technical buzzwords
+- Very different systems design: NPHC is a cleansheet design whereby it's claim processing is designed and implemented from the ground up. As a result, we could not directly port over the existing data, but instead had to recreate it. We had to spend considerable effort and time with our PO and soluion architects who have built our rule model to harmonise our mapping.
 - Great complexity in the data:
   - Data comes from two datasources - Mediclaim database on Microsoft SQL Server, and CPF claim processing data on IBM mainframe DB2. There is overlap but they are not always in sync.
-  - Compared to the Mediclaim's relational database, and CPF's hierarchical database, NPHC uses Postgres but as object database.
+  - Very different database setups: Mediclaim uses relational database, CPF uses hierarchical database, NPHC uses Postgres but as object database.
   - A claim includes up to hundreds of data fields, requiring deep knowledge on how the data is generated and what it should be.
-  - In addition to claim data, other information - patient data, payer data, utilisation data (by patient and period, and not by claim), and many more. Even the patient or payer's IDs (usually NRIC) can change over the years and we need to be able to align them back to the same person despite ID changes.
-  - Much interdependency between the data - processing of one claim depends on history of all previous claims for the same patient.
+  - Other information - patient data, payer data, utilisation data (by patient and period, and not by claim), and many more. Even the patient or payer's IDs (usually NRIC) can change over the years and we need to be able to align them back to the same person despite ID changes.
+  - We cannot just migration each claim indidivudally. A claim's state depends on history of all previous claims for the same patient.
   - Data schema has evolved over decades as original system went live in 1984. It is messy. We could tell that new tables and fields were added over the years to support new functionality.
   - Business logic was complex and not well understood by the team, including even our business users. Oftentimes, we had to analyse existing data to identify patterns. 
-  - Last but not least, in addition to standard claim processing, we also had to support additional workflows - reimbursement, claims that were pending manual verification, appeals, blacklists, special processing schemes. Bulk of the difficult comes from understanding the operational details so that we can start discussing how to map them to NPHC operations.
-- We had to iteratively try our assumptions of the data and working collaboratively with our business users to examine the output and progressively refine our mapping model.
-- Mapping of the data could not be done completely as we were both discovering the existing data, while also working with an evolving NPHC data model. Furthermore, NPHC uses a cleanroom approach to claim processing. As a result, we also had to spend considerable effort and time with our PO and soluion architects who have built our rule model to harmonise our mapping.
+  - There are additional claim processing flows to support - reimbursement, claims that were pending manual verification, appeals, blacklists, special processing schemes.
+- We had to try our assumptions, and working collaboratively with our business users to examine the output and progressively refine our mapping model.
 
 ### Improve NPHC Data Migration Loading Performance to Meet Requirements
 
