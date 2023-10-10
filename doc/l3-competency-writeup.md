@@ -1,11 +1,14 @@
 # Sample Writeups for SWE L3 Competency Assessment
 
-The sample writeups here provide examples. Pay attention to the following.
-- Clear and sufficiently limited scope to establish what you are basing the assessment on. Picking specific projects or tasks with concrete deliverables would be ideal, and these maybe reusable for performance appraisal purposes.
-  - Implementation and performance testing of MediSave Balance Enquiry (MBE) API - specific API
-  - Design of NPHC's claim processing DLQ (Deadletter Queue) - specific functionality of an application
-  - Design and implementation of data mapping logic to facilitate data loading into NPHC from existing system
-  - Performance tuning of NPHC data loader to achieve NPHC go live cutover timing requirements
+Here are a few writeups to provide examples for the "Basis of Assessment" field in the form.
+1. Implementation and performance testing of MediSave Balance Enquiry (MBE) API - specific API
+2. Design of NPHC's claim processing DLQ (Deadletter Queue) - specific functionality of an application
+3. Design and implementation of data mapping logic to facilitate data loading into NPHC from existing system
+4. Performance tuning of NPHC data loader to achieve NPHC go live cutover timing requirements
+
+Tips
+- Our goal is to have a clear picture of the scope and complexity. This is best helped by limited scope and well-defined delivereables that were met. Pick specific deliverables rather than overall project or product requirements.
+- Feel free to throw in technical terms as long as those are actually used in the delivereables.
 - Although one writeup is needed for each competency, you can arguably reuse the same writeup as long as you can clearly separate your assessment by competency. We advise that you use a common background to describe the problem statement/project, but use specific descriptions for each competency's writeup submission.
 - Pay close attention to how it helps you answer the multiple choice questions in the form as listed below.
 
@@ -111,7 +114,6 @@ Key Challenges - Highlight challenges, especially technical ones encountered to 
 - Very different systems design: NPHC is a cleansheet design whereby it's claim processing is designed and implemented from the ground up. As a result, we could not directly port over the existing data, but instead had to recreate it. We had to spend considerable effort and time with our PO and soluion architects who have built our rule model to harmonise our mapping.
 - Great complexity in the data:
   - Data comes from two datasources - Mediclaim database on Microsoft SQL Server, and CPF claim processing data on IBM mainframe DB2. There is overlap but they are not always in sync.
-  - Very different database setups: Mediclaim uses relational database, CPF uses hierarchical database, NPHC uses Postgres but as object database.
   - A claim includes up to hundreds of data fields, requiring deep knowledge on how the data is generated and what it should be.
   - Other information - patient data, payer data, utilisation data (by patient and period, and not by claim), and many more. Even the patient or payer's IDs (usually NRIC) can change over the years and we need to be able to align them back to the same person despite ID changes.
   - We cannot just migration each claim indidivudally. A claim's state depends on history of all previous claims for the same patient.
@@ -130,8 +132,6 @@ Role and Achievement - Briefly describe assessee's role and the concrete deliver
 - The software was developed by 4 SWEs and tested by 3 SWEs.
 - I was the senior SWE of the team. I was focused on developing the Spring Batch foundation of the data migration tool and ensuring it runs in a performant manner.
 - I proposed the use of Spring Batch to the team. I designed the initial Spring Batch structure including our parallel loading mechanism and the designt the metadata for us to track migration jobs.
-- I worked with members of the team to design and develop the algorithms to implement the data loading pipeline in a performant way.
-- I coordinated with our DevOps and NPHC platform team on the shared resources needed to carry out activities between the teams.
 - I used performance tools such as AWS Performance Insights, Grafana to monitor performance (query performance, JVM usage etc) and identify bottlenecks.
 - I developed and optimised our query scripts to improve performance, and advised the rest of the team on that as I am very proficient on SQL.
 - Code was implemented in Kotlin using Spring Batch. We had parent jobs that created child jobs to be run by child workers in parallel.
@@ -139,13 +139,11 @@ Role and Achievement - Briefly describe assessee's role and the concrete deliver
 
 Key Challenges - Highlight challenges, especially technical ones encountered to give us a sensing of the level of technical difficulty. Good to throw in technical buzzwords
 - We had to come up with deep optimisations in order to meet our tight timing requirements.
-  - Created as many indexes as necessary to speed up queries, and also removed as many as possible to reduce update bottlenecks.
   - Created materialised views and temporary tables for us to prepare the data as early as possible, as well as to leverage the more optimised database engine over our own code implementation.
   - Used Redis to cache runtime working data.
   - Re-organised the processing to be based on each patient's claim history because of the need to have all of the patient's claims when loading each claim.
   - Used bulk insert and sequence generation.
-  - Used SpringBatch multithreading step processor to have more parallelism within a single worker.
+  - Used Spring Batch multithreading step processor to have more parallelism within a single worker.
 - We also overcome some of these problems.
   - We decided to simplify and not have autoscaling as our setup because Kubernetes would shutdown pods without realising that each pod is working on multi-hour requests. We should have designed for shorter-lived jobs but that only became apparent in hindsight.
-  - We encountered JVM out of heap space issues so we had to ensure we had enough heap space allocated, and also watch out for memory leaks.
 - Our first run of our script would have taken 3 months to migrate the data. Through extensive optimisation, we were able to reduce it to 10 hours for 15M records 2-week delta update after pre-loading 50M for entire claim history.
