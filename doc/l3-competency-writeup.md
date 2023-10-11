@@ -58,8 +58,8 @@ Key Contributions - Highlight key challenges solved, especially technical ones e
 ### Update Design and Optimise NPHC (National Platform for Healthcare Claims) Design for Performance
 
 Background - Simple bullet points to help us understand the subject used for assessment
-- NPHC implements all MediSave and MediShield Life claims processing. Event-driven workflow is implemented with files received and delivered via SFTP.
-- Claim processor is implemented as a collection of microservices, utilising Apache Camel workflow and integration framework, and communicating via AWS SQS.
+- NPHC is Singapore's national system to process all MediSave and MediShield Life claims. It implements event-driven workflow that processes files received and delivered via SFTP.
+- Claim processing is implemented as a collection of microservices, utilising Apache Camel workflow and integration framework, and communicating via AWS SQS.
 - IBM ODM (Operational Decision Manager) is used for us to implement complex claim processing rules and accessed via REST API.
 - We also need to integrate with external parties/application via SFTP and REST to fully implement the claim processing flow - payments, patient information, medical institution accreditation etc. If Medishield Life is involved, claims also need to be routed to external insurers for additional processing.
 - We developed our intitial solution, but had to make adjustments to our software design to meet performance requirements before going live -up to 60,000 claims per hour.
@@ -104,7 +104,7 @@ Role and Achievement - Briefly describe assessee's role and the concrete deliver
 - We were able to complete our mapping and implement the migration tool to be ready for the initialial Milestone 3 launch of NPHC.
  
 Key Challenges - Highlight challenges, especially technical ones encountered to give us a sensing of the level of technical difficulty. Good to throw in technical buzzwords
-- Very different systems design: NPHC is a cleansheet design whereby it's claim processing is designed and implemented from the ground up. As a result, we could not directly port over the existing data, but instead had to recreate it. We had to spend considerable effort and time with our PO and soluion architects who have built our rule model to harmonise our mapping.
+- Very different systems design: NPHC is a cleansheet design with rules implemented from the ground up. We could not directly port over the existing data, but instead had to recreate it. We spent considerable effort with our PO and soluion architects to discuss and harmonise our mapping.
 - Great complexity in the data:
   - Data comes from two datasources - Mediclaim database on Microsoft SQL Server, and CPF claim processing data on IBM mainframe DB2. There is overlap but they are not always in sync.
   - A claim includes up to hundreds of data fields, requiring deep knowledge on how the data is generated and what it should be.
