@@ -58,19 +58,19 @@ Key Contributions - Highlight key challenges solved, especially technical ones e
 ### Update Design and Optimise NPHC (National Platform for Healthcare Claims) Design for Performance
 
 Background - Simple bullet points to help us understand the subject used for assessment
-- NPHC implements all MediSave and MediShield Life claims processing.
-- NPHC's claim processing implements event-driven workflow, where we receive and deliver XML files from/to Medical Institutions (MI) and Insurers indirectly via Mediclaim over SFTP.
-- We utilize Apache Camel workflow and integration framework to implenment multiple microservices to manage the claims process and transmit claim data to multiple processes, integrated using Apaceh SQS.
-- We use REST API to call IBM ODM (Operational Decision Manager) as a rule engine to implement claim processing rules.
-- We also make REST calls through APEX to CPF to initiate payments, as well as other external calls to validate MI and patient info (such as date of birth, gender etc).
-- Claim processing logic is complex due to multiple steps. If Medishield Life is involved, claims also need to be routed to external insurers for additional processing.
-- By improving the initial design of the microservices, we significantly improved the performance of the platform in processing claims.
+- NPHC implements all MediSave and MediShield Life claims processing. Event-driven workflow is implemented with files received and delivered via SFTP.
+- Claim processor is implemented as a collection of microservices, utilising Apache Camel workflow and integration framework, and communicating via AWS SQS.
+- IBM ODM (Operational Decision Manager) is used for us to implement complex claim processing rules and accessed via REST API.
+- We also need to integrate with external parties/application via SFTP and REST to fully implement the claim processing flow - payments, patient information, medical institution accreditation etc. If Medishield Life is involved, claims also need to be routed to external insurers for additional processing.
+- We developed our intitial solution, but had to make adjustments to our software design to meet performance requirements before going live -up to 60,000 claims per hour.
+
 Role and Achievement - Briefly describe assessee's role and the concrete deliverables so we can establish scope.
 - The entire NPHC Claim Processing Platform was developed by 11 SWEs and 11 QE.
 - I was the SWE lead, collaborated with MOH, IFC and the External team (CPFB, APEX, MSB, MMAE).
 - My main objective was to provide architectural solutions for the platform, and I presented the proposed solution to the Solution Architect (SA).
 - I redesigned the microservices to improve the performance of the platform in processing claims.
 - I broke down microservices based on business logic, leading to enhanced platform performance and simplified process complexity.
+
 Key Challenges - Highlight challenges, especially technical ones encountered to give us a sensing of the level of technical difficulty. Good to throw in technical buzzwords
 - Complex Claims Process:
   - The original platform dates back to 1984 and its documentation is outdated, making it challenging for PO and BA to grasp the specific business logic. The platform design must be flexible to facilitate swift adaptations for document changes.
@@ -79,8 +79,6 @@ Key Challenges - Highlight challenges, especially technical ones encountered to 
   - The initial platform design mainly focused on functional implementation and lacked stress testing.
   - Given the complexity of platform functionality, comprehensive integration testing is required to identify performance bottlenecks.
   - Improving platform performance requires a comprehensive transformation of the entire platform architecture, and ensuring platform stability is the top priority.
-
-#### Performance Optimization
 - Complex Data Structure:
   - Ensuring valid external interfaces to access this data is critical. The introduction of multiple read-only databases not only improves data retrieval efficiency, but also effectively reduces its impact on the claims process.
   - The claims data resides in a fairly large JSON dataset, averaging around 100KB. Managing the storage and retrieval of such data presents significant performance challenges. To achieve significant performance improvements, we use partitioned tables to simplify data processing. This optimization resulted in a significant reduction in search time, from 6 seconds to just 2 seconds.
